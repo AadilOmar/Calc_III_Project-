@@ -1,5 +1,23 @@
-from matrix import mult;
+from matrix_multiply import mult
+from numpy import *
+#from sympy import Eq, Symbol, solve
 
+
+def getDeterminant():
+	print("working on it")
+	
+def findMaxEigenValue():
+	print("working on it")
+	#if(triangularMatrix):
+		#diagonal elements
+	#else:
+
+def computeError(matrix):
+	maxEigen = findMaxEigenValue();
+
+def getArrayToFindNorm(l,u,b):
+	#return (mult(l,u)-b)
+	print("working on it")
 
 def computeLU(b):
 	if(len(b)!=len(b[0])):
@@ -25,11 +43,15 @@ def computeLU(b):
 				uMatrix[i][j] = uMatrix[h][j]*toScale+uMatrix[i][j] #first [][] must be 0.
 	print uMatrix
 	print lMatrix
+	return (lMatrix,uMatrix)
+
 
  
 b =	[[2,4,-4],
 	[1,-4,3],
 	[-6,-9,5]];
-computeLU(b);
+(l,u) = computeLU(b)
+total = getArrayToFindNorm(l,u,b)	
+computeError(total)
 
 
