@@ -1,23 +1,29 @@
 from matrix_multiply import mult
-from numpy import *
+#from numpy import *
+import numpy as np
 #from sympy import Eq, Symbol, solve
 
-
-def getDeterminant():
-	print("working on it")
-	
-def findMaxEigenValue():
-	print("working on it")
-	#if(triangularMatrix):
-		#diagonal elements
-	#else:
+#array[row][col]
 
 def computeError(matrix):
-	maxEigen = findMaxEigenValue();
+	#add all elements in column. Absolute value it. Find the greatest value
+	error = 0
+	total = 0
+	for i in range(len(matrix)):
+		for j in range(len(matrix)):
+			if (matrix[i][j] < 0):
+				total-=matrix[i][j]
+			else:
+				total+=matrix[i][j]
+		if(total>error):
+			error = total			
+		total = 0
+	print (error," is the error")
+	return error	
 
 def getArrayToFindNorm(l,u,b):
-	#return (mult(l,u)-b)
-	print("working on it")
+	#returns (LU-H)
+	return np.subtract(mult(l,u),b)
 
 def computeLU(b):
 	if(len(b)!=len(b[0])):
@@ -51,7 +57,6 @@ b =	[[2,4,-4],
 	[1,-4,3],
 	[-6,-9,5]];
 (l,u) = computeLU(b)
-total = getArrayToFindNorm(l,u,b)	
-computeError(total)
-
+array = getArrayToFindNorm(l,u,b) #gets (LU-H)	
+error = computeError(b)
 
