@@ -29,32 +29,27 @@ def normOfVector(x):
         sumOfNumbers = sum([i**2 for i in x])
         return sqrt(sumOfNumbers)
 
-def computeQR(matrix):
-        Q, R = scipy.linalg.qr(matrix)
-        print "A: "
-        pprint.pprint(matrix)
-        print "Q: "
-        pprint.pprint(Q)
-        print"R: "
-        pprint.pprint(R)
-
-def QRHHBITCH(matrix):
+def Qr_fact_househ(matrix):
 
         R = np.copy(matrix)
         matrixARows, matrixACols = np.shape(matrix)
+
+        #Construct an nxn identity matrix
         Q = np.identity(matrixARows)
 
-        for cnt in range(matrixARows-1):
-            x = R[cnt:, cnt]
+        for i in range(matrixARows-1):
+            x = R[i:, i]
             e = np.zeros_like(x)
-            e[0] = copysign(np.linalg.norm(x), -A[cnt,cnt])
+            e[0] = copysign(np.linalg.norm(x), -A[i,i])
             u = x + e
             v = u / np.linalg.norm(u)
-            Q_cnt = np.identity(matrixARows)
-            Q_cnt[cnt:, cnt:] -= 2.0 * np.outer(v,v)
-            R = np.dot(Q_cnt, R)
-            #Fix up lower triangular R matrix values
-            Q = np.dot(Q, Q_cnt.T)
+            Q_2 = np.identity(matrixARows)
+            Q_2[i:, i:] -= 2.0 * np.outer(v,v)
+
+            #Multiply, or "Dot Product" out R with Q_2
+            R = np.dot(Q_2, R)
+            #Multiply/Dot Product out Q with Q_2
+            Q = np.dot(Q, Q_2.T)
 
         #Done with For loop, now fix discrepencies in the matrices
         #Forms the basis of the Lower Triangular Matrix in R
@@ -72,8 +67,9 @@ def QRHHBITCH(matrix):
 
         
 
-#def doEverything(A,b):
-#	l,u = computeLU(A)
+def DoEverythingQRHouseholders(A):
+        Q, R = Qr_fact_househ(A)
+        return (Q,R)
 #	y = findY(l,b)
 #	x = findX(u,y)
 #	arr = getArrayToFindNorm(l,u,A)
