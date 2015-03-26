@@ -26,12 +26,16 @@ def getArrayToFindNorm(l,u,a):
 	return np.subtract(mult(l,u),a)
 
 def normOfVector(x):
-        sumOfNumbers = sum([i**2 for i in x])
-        return sqrt(sumOfNumbers)
-
+        sumOfNumbersSquared = sum([i**2 for i in x])
+        total = sqrt(sumOfNumbersSquared)
+        return total
+    
 def Qr_fact_househ(matrix):
 
+        #Clone matrix A into matrix R
         R = np.copy(matrix)
+
+        #Get the respective rows and column length of matrix A
         matrixARows, matrixACols = np.shape(matrix)
 
         #Construct an nxn identity matrix
@@ -42,14 +46,21 @@ def Qr_fact_househ(matrix):
             e = np.zeros_like(x)
             e[0] = copysign(np.linalg.norm(x), -A[i,i])
             u = x + e
-            v = u / np.linalg.norm(u)
+            
+            #Successfully used my method defined above to find norm
+            #instead of numpy's method
+            u_norm = normOfVector(u)
+            v = u / u_norm
             Q_2 = np.identity(matrixARows)
-            Q_2[i:, i:] -= 2.0 * np.outer(v,v)
-
+            outerMatrix = np.outer(v,v)
+            Q_2[i:, i:] -= 2.0 * outerMatrix
+            
             #Multiply, or "Dot Product" out R with Q_2
-            R = np.dot(Q_2, R)
+            #Trying Aadil's method-which returns a list, which I then convert to a numpy array
+            R = np.asarray(mult(Q_2, R))
             #Multiply/Dot Product out Q with Q_2
-            Q = np.dot(Q, Q_2.T)
+            #Try it with Aadil's method and cast it into a numpy array from a list
+            Q = np.asarray(mult(Q, Q_2.T))
 
         #Done with For loop, now fix discrepencies in the matrices
         #Forms the basis of the Lower Triangular Matrix in R
