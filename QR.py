@@ -44,7 +44,8 @@ def Qr_fact_househ(matrix):
         for i in range(matrixARows-1):
             x = R[i:, i]
             e = np.zeros_like(x)
-            e[0] = copysign(np.linalg.norm(x), -A[i,i])
+            #e[0] = copysign(np.linalg.norm(x), -A[i,i])
+            e[0] = copysign(normOfVector(x), -A[i,i])
             u = x + e
             
             #Successfully used my method defined above to find norm
@@ -62,17 +63,15 @@ def Qr_fact_househ(matrix):
             #Try it with Aadil's method and cast it into a numpy array from a list
             Q = np.asarray(mult(Q, Q_2.T))
 
-        #Done with For loop, now fix discrepencies in the matrices
-        #Forms the basis of the Lower Triangular Matrix in R
-        R[1,0] = 0
-        R[2,0] = 0
-        R[2,1] = 0
+ 
+        #Get's rid of the values in R that shouldn't be there for it to be an upper triangular matrix
+        R = np.triu(R)
         
-        #Fix up discrepencies in Q
-        Q = -1 * Q
+        #Fix up discrepencies in Q -- Actually, may not be necessary
+        #Q = -1 * Q
     
-        #Fix up discrepencies in R
-        R = -1 * R
+        #Fix up discrepencies in R -- Actually, may not be necessary
+        #R = -1 * R
 
         return Q, R
 
