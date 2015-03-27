@@ -1,5 +1,6 @@
 from matrix_multiply import mult
 from LU import rowReduce
+from LU import convertToUpperTriangle
 import numpy as np
 import scipy
 import scipy.linalg
@@ -31,7 +32,7 @@ def normOfVector(x):
         return total
     
 def Qr_fact_househ(matrix):
-
+        
         #Clone matrix A into matrix R
         R = np.copy(matrix)
 
@@ -86,3 +87,6 @@ def DoEverythingQRHouseholders(A):
 #	e = computeError(arr)
 #	return (l,u,y,x,e)
 #
+
+#Constructing a matrix A for testing purposes
+A = np.matrix([[12,-51,4], [6,167,-68], [-4,24,-41]])
