@@ -1,8 +1,10 @@
-from __future__ import print_function
-from matrix_multiply import mult
+from matrix_multiply import *
 import numpy as np
-from LU import*
+from LU import *
+import LU as LU
+from solveHilbert import *
 import fileinput
+import sys
 
 
 def createHilbert(n):
@@ -20,7 +22,7 @@ def createB(n):
 
 def printPretty(n,matrix,error,f):
 	f.write ("FOR N = %s:\n"%n);
-	f.write ("Solution: %s\n"%matrix)
+	f.write ("Solution: \n%s\n"%np.matrix(matrix))
 	f.write ("Error: %s\n"%error)
 	f.write("\n")
 
@@ -31,13 +33,13 @@ def createHilbertAndBMatrices(n):
 
 def doHilbert():
 	f = open('output.txt','w')
-	for n in range(2,20):
+	for n in range(2,21):
 		(H,b) = createHilbertAndBMatrices(n)
-		(l,u,y,x,e) = doEverything(H,b)
+		(l,u,y,x,e) = LU.doEverything(H,b)
 		printPretty(n,x,e,f)
 	f.close() 
 
 
 
-#(l,u,y,x) = doEverything(H,b)
-#print printPretty(x)
+# (l,u,y,x) = doEverything(H,b)
+# print printPretty()
