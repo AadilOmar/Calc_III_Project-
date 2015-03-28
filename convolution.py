@@ -133,7 +133,7 @@ def gauss_seidel(A, y, x0, tol):
 		error = computeError(np.subtract(oldX0,x0))
 		if (error<tol):
 			answer = x0
-			numIterations = i
+			numIterations = i+1
 			break
 	return (numIterations,answer)
 
@@ -156,7 +156,7 @@ def jacobi(A, y, x0, tol):
 		# print error
 		if (error<tol):
 			answer = x0
-			numIterations = i
+			numIterations = i+1
 			break
 	return (numIterations,answer)
 

@@ -35,6 +35,8 @@ def getInput():
 
 def printEncodedOutput(yCode, decodedStream,iterations):
 	f = open('output.txt','w')
+	if(iterations<=0):
+		iterations = "Method does not converge after 25 iterations"
 	f.write ("Jacobi Method Encoding/Decoding Problem:\n")
 	f.write ("y stream output: \n%s\n"%np.matrix(yCode))
 	f.write ("decoded stream: \n%s\n"%np.array(decodedStream))
@@ -43,7 +45,8 @@ def printEncodedOutput(yCode, decodedStream,iterations):
 	f.close()
 
 def printIterative(answer,iterations):
-	if(iterations==-1):
+	print iterations
+	if(iterations<=0):
 		iterations = "Method does not converge after 25 iterations"
 	f = open('output.txt','w')
 	f.write ("Jacobi Method Iterative Method:\n")
@@ -63,4 +66,5 @@ if(status=="encode"):
 else: #status is iterative
 	(A,Y,startingValue,error) = getInput()
 	(jacobiIterations,answer) = jacobi(A,Y,startingValue,float(error))
+	print jacobiIterations,"================="
 	printIterative(answer,jacobiIterations)

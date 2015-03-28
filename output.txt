@@ -1,3 +1,3 @@
-Jacobi Method Iterative Method:
-Iterations needed: 11
+Gauss Seidel Method Iterative Method:
+Iterations needed: 8
 

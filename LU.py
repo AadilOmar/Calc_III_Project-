@@ -37,13 +37,13 @@ def computeLU(b):
 			if(uMatrix[h][h]==0.0):
 				toScale = 1
 			else:
-				toScale = -1*(float)(uMatrix[i][h])/(uMatrix[h][h]); #value to multiply top row times
+				toScale = -1*(float)(uMatrix[i][h])/float(uMatrix[h][h]); #value to multiply top row times
 			valueOfL = float(-1*toScale)
 			#gets value of L matrix at current position 
 			if(lMatrix[i][h]!=1):
 				lMatrix[i][h] = valueOfL
 			for j in range(h,len(uMatrix)): #move along cols
-				uMatrix[i][j] = float(uMatrix[h][j])*toScale+uMatrix[i][j] #first [][] must be 0.		
+				uMatrix[i][j] = float(uMatrix[h][j])*toScale+float(uMatrix[i][j]) #first [][] must be 0.		
 	return (lMatrix,uMatrix)
 
 def rowReduce(A,b):
@@ -79,7 +79,7 @@ def convertToUpperTriangle(L):
 	return U
 
 def flipMatrix(M):
-	#might have crashed LU- check over again to see if it still works
+	# might have crashed LU- check over again to see if it still works
 	# M.reverse()
 	for i in range(len(M)/2):
 		M[i][0],M[len(M)-i-1][0] = M[len(M)-i-1][0],M[i][0]
@@ -87,25 +87,27 @@ def flipMatrix(M):
 
 def findX(U,y):
 	size = len(U)
-	# x = [row[:] for row in y] #copy of b
-	x = list(y)
+	x = [[0 for x in range(1)] for x in range(len(U))]
+	for i in range(len(U)):
+		x[i][0] = y[i][0]
 	for i in range(size-1,-1,-1):
 		for j in range(size-1,i,-1):
-			x[i][0] -= U[i][j]*x[j][0]
+			x[i][0] -= (U[i][j])*(x[j][0])
 		if (U[i][i]!=0):
-			x[i][0] /= U[i][i]
+			x[i][0] /= (U[i][i])
 	return x
 
 def findY(L,b):
 	newList = [[0 for x in range(len(L))] for x in range(len(L))]
 	for i in range(len(L)):
 		for j in range(len(L)):
-			newList[i][j] = L[i][j]
+			newList[i][j] = L[i][j]		
 	convertedMatrix = convertToUpperTriangle(newList)
 	y = flipMatrix(findX(convertedMatrix,flipMatrix(b)))
 	return y	 
 
 def doEverything(A,b):
+	# print A
 	l,u = computeLU(A)
 	y = findY(l,b)
 	x = findX(u,y)
@@ -114,32 +116,23 @@ def doEverything(A,b):
 	return (l,u,y,x,e)
 
 def separateMatrices(matrix):
-	# print matrix
-	print matrix
+	
 	num = np.math.sqrt(len(matrix))
 	cols = int(np.math.floor(num))
 	A = [[0 for x in range(cols)] for x in range(cols)]
 	B = [[1 for x in range(1)] for x in range(cols)]
-	# print A
-	# print B
-	# B = [1 for index in range(cols)]
 	index = 0
 	for i in range(cols):
 		for j in range(cols):
-			A[i][j] = matrix[index]
+			A[i][j] = float(matrix[index])
 			index+=1
 		if (not num.is_integer()):
 			index+=1
-	print A		
-	print matrix
 	if (not num.is_integer()):
 		anotherIndex = cols	
 		for k in range(cols):
-			print matrix[10],"asfasdf"
-			B[k][0] = matrix[anotherIndex]
+			B[k][0] = float(matrix[anotherIndex])
 			anotherIndex+=(cols+1)
-	print (A,"}}}}}}}}}}}")
-	print (B,"{{{{{{{{{")
 	return (A,B)
 
 def hasArgument():
@@ -154,47 +147,12 @@ def readFile():
 		total+=line
 	total = total.replace('\n',' ')	
 	array = total.split(' ')
-	array.pop()	
+	if '' in array:
+		array.remove('')
+	if "" in array:
+		array.remove("")	
 	for i in range(len(array)):
-		array[i] = float(array[i])
+		array[i] = (array[i])
 	(a,b) = separateMatrices(array)	
+	# print(type(b[0][0]),"!!!!!!!!!!!!!!")		
 	return (a,b)
-
-L = [[1,0,0],
-	[2,1,0],
-	[2,-1,1]]
-
-U =	[[1,2,3],
-	[0,2,1],
-	[0,0,-1]]
-
-A = [[1,2,2],
-	 [0,1,4],
-	 [0,0,2]]
-B = [[2],
-	 [2],
-	 [2]]
-
-l = [[1,0,0,0],
-	 [.5,1,0,0],
-	 [0.333333,1,1,0],
-	 [.25,.9,1.5,1]]
-
-u =	[[1,.5,.333333,.25],
-	 [0,0.0833333,0.0833333, .075],
-	 [0,0,0.00555556, 0.00833333],
-	 [0, 0, 0, 0.000357143]]
-
-h =	[[1,.5,.333333,.25],
-	 [.5,.33333,.25, .2],
-	 [.33333,.25, .2, 0.1666667],
-	 [.25, .2, .1666667, .14285714]]	 
-y = [[0.046415],
-	 [0.0232075],
-	 [9283/float(1200000)],
-	 [0.00232075]]
-
-b = [[0.0464159],
-	 [0.0464159],
-	 [0.0464159],
-	 [0.0464159]]
