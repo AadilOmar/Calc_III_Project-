@@ -2,6 +2,8 @@ from matrix_multiply import *
 from LU import rowReduce
 from LU import convertToUpperTriangle
 from LU import flipMatrix
+from LU import findX
+from LU import getArrayToFindNorm
 import numpy as np
 import scipy
 import scipy.linalg
@@ -24,16 +26,13 @@ def computeError(matrix):
 		total = 0
 	return error	
 
-def getArrayToFindNorm(l,u,a):
-	return np.subtract(mult(l,u),a)
-
 def normOfVector(x):
         sumOfNumbersSquared = sum([i**2 for i in x])
         total = sqrt(sumOfNumbersSquared)
         return total
     
 def Qr_fact_househ(matrix):
-        
+        matrix = np.asarray(matrix)
         #Clone matrix A into matrix R
         R = np.copy(matrix)
 
@@ -47,7 +46,7 @@ def Qr_fact_househ(matrix):
             x = R[i:, i]
             e = np.zeros_like(x)
             #e[0] = copysign(np.linalg.norm(x), -A[i,i])
-            e[0] = copysign(normOfVector(x), -A[i,i])
+            e[0] = copysign(normOfVector(x), -matrix[i,i])
             u = x + e
             
             #Successfully used my method defined above to find norm
@@ -77,17 +76,22 @@ def Qr_fact_househ(matrix):
 
         return Q, R
 
-def solve_qr_b(A, b):
-    #Gimmicky method to see if I obtain same result as in the pdf
-    AInverse = np.linalg.inv(A)
-    x = np.dot(AInverse, b)
-    #return x
-    #Actual method:
-    #produces y = Qtb
-    y = mMult(Q.transpose,b)
-    y = np.matrix(y)
+def solve_qr_b(Q, R, b):
+    y = mMult(Q.transpose(), b)
+    y = np.asarray(y) #Conveting to a numpy assoc array for consistency with other matrices
+    x = findX(R, y) #Coverting to a numpy assoc array for consistency with other matrices
+    return y, x
 
-#def DoEverythingQRHouseholders(A):
+
+
+def DoEverythingQRHouseholders(A, b):
+    Q, R = Qr_fact_househ(A) #Works
+    y, x = solve_qr_b(Q, R, b)
+    QR = mMult(Q, R)
+    e = computeError(np.subtract(QR, A))
+    return Q, R, y, x, e
+    
+    
 #        return (Q,R)
 #	y = findY(l,b)
 #	x = findX(u,y)
@@ -101,7 +105,7 @@ def solve_qr_b(A, b):
 
 
 #Does everything
-A = np.matrix([[1, 0.5, 0.333333, 0.25],[0.5, 0.333333, 0.25, 0.2], [0.333333, 0.25, 0.2, 0.166667], [0.25, 0.2, 0.166667, 0.142857]])
-b = np.matrix([[0.0464159],[0.0464159],[0.0464159],[0.0464159]])
-Q, R = Qr_fact_househ(A)
-x = solve_qr_b(A, b)
+A = ([[1, 0.5, 0.333333, 0.25],[0.5, 0.333333, 0.25, 0.2], [0.333333, 0.25, 0.2, 0.166667], [0.25, 0.2, 0.166667, 0.142857]])
+b = np.asarray([[0.0464159],[0.0464159],[0.0464159],[0.0464159]])
+#Q, R = Qr_fact_househ(A)
+#x = solve_qr_b(A, b)
