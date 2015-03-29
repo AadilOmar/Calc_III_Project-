@@ -1,6 +1,7 @@
-from matrix_multiply import mult
+from matrix_multiply import *
 from LU import rowReduce
 from LU import convertToUpperTriangle
+from LU import flipMatrix
 import numpy as np
 import scipy
 import scipy.linalg
@@ -13,11 +14,11 @@ def computeError(matrix):
 	error = 0
 	total = 0
 	for i in range(len(matrix)):
-		for j in range(len(matrix)):
+		for j in range(len(matrix[0])):
 			if (matrix[i][j] < 0):
-				total-=matrix[i][j]
+				total-=float(matrix[i][j])
 			else:
-				total+=matrix[i][j]
+				total+=float(matrix[i][j])
 		if(total>error):
 			error = total			
 		total = 0
@@ -59,10 +60,10 @@ def Qr_fact_househ(matrix):
             
             #Multiply, or "Dot Product" out R with Q_2
             #Trying Aadil's method-which returns a list, which I then convert to a numpy array
-            R = np.asarray(mult(Q_2, R))
+            R = np.asarray(mMult(Q_2, R))
             #Multiply/Dot Product out Q with Q_2
             #Try it with Aadil's method and cast it into a numpy array from a list
-            Q = np.asarray(mult(Q, Q_2.T))
+            Q = np.asarray(mMult(Q, Q_2.T))
 
  
         #Get's rid of the values in R that shouldn't be there for it to be an upper triangular matrix
@@ -76,11 +77,18 @@ def Qr_fact_househ(matrix):
 
         return Q, R
 
-        
+def solve_qr_b(A, b):
+    #Gimmicky method to see if I obtain same result as in the pdf
+    AInverse = np.linalg.inv(A)
+    x = np.dot(AInverse, b)
+    #return x
+    #Actual method:
+    #produces y = Qtb
+    y = mMult(Q.transpose,b)
+    y = np.matrix(y)
 
-def DoEverythingQRHouseholders(A):
-        Q, R = Qr_fact_househ(A)
-        return (Q,R)
+#def DoEverythingQRHouseholders(A):
+#        return (Q,R)
 #	y = findY(l,b)
 #	x = findX(u,y)
 #	arr = getArrayToFindNorm(l,u,A)
@@ -89,4 +97,11 @@ def DoEverythingQRHouseholders(A):
 #
 
 #Constructing a matrix A for testing purposes
-A = np.matrix([[12,-51,4], [6,167,-68], [-4,24,-41]])
+#A = np.matrix([[12,-51,4], [6,167,-68], [-4,24,-41]])
+
+
+#Does everything
+A = np.matrix([[1, 0.5, 0.333333, 0.25],[0.5, 0.333333, 0.25, 0.2], [0.333333, 0.25, 0.2, 0.166667], [0.25, 0.2, 0.166667, 0.142857]])
+b = np.matrix([[0.0464159],[0.0464159],[0.0464159],[0.0464159]])
+Q, R = Qr_fact_househ(A)
+x = solve_qr_b(A, b)
