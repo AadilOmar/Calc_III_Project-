@@ -1,5 +1,6 @@
 from matrix_multiply import *
 from LU import rowReduce
+from LU import readFile
 from LU import convertToUpperTriangle
 from LU import flipMatrix
 from LU import findX
@@ -10,6 +11,7 @@ import scipy.linalg
 import pprint
 from math import sqrt
 from math import *
+import sys
 
 output = open("output.txt", "w")
 
@@ -172,7 +174,7 @@ def solve_qr_b(Q, R, b):
     y = mMult(Q.transpose(), b)
     y = np.asarray(y) #Conveting to a numpy assoc array for consistency with other matrices
     x = findX(R, y) #Coverting to a numpy assoc array for consistency with other matrices
-    return y, x
+    return x
 
 
 
@@ -183,21 +185,65 @@ def DoEverythingQRHouseholders(A, b):
     e = computeError(np.subtract(QR, A))
     return Q, R, y, x, e
     
-    
-#        return (Q,R)
-#	y = findY(l,b)
-#	x = findX(u,y)
-#	arr = getArrayToFindNorm(l,u,A)
-#	e = computeError(arr)
-#	return (l,u,y,x,e)
-#
+A = ([[1, 0.5, 0.333333, 0.25],[0.5, 0.333333, 0.25, 0.2], [0.333333, 0.25, 0.2, 0.166667], [0.25, 0.2, 0.166667, 0.142857]])
+b = np.asarray([[0.0464159],[0.0464159],[0.0464159],[0.0464159]])
+
+def isInt(s):
+    try: 
+        int(s)
+        return True
+    except ValueError:
+        return False
+
+f = open('output.txt','w')
+if(isInt(sys.argv[1])):
+    #do hilbert 
+    print "doing hilbert"
+else:
+    if((sys.argv[2])=="h"):
+        print "doing house"
+        Q, R = Qr_fact_househ(A)  
+        if(len(sys.argv)==4):
+            print "solving"
+            x = solve_qr_b(Q,R,b)
+            print x
+            f.write ("x: \n%s\n\n"%np.matrix(x))
+            # f.write ("error: %s\n"%e)
+        else:
+            f.write ("Q: \n%s\n\n"%np.array(Q))
+            f.write ("R: \n%s\n\n"%np.matrix(R)) 
+            print "qr"
+    else:
+        print "doing givens"
+        if(len(sys.argv)==4):
+            print "solving"
+        else:
+            print "qr"
+f.write("\n")
+f.close() 
+print "done"
+    # (A,B) = LU.readFile(sys.argv[1])
+    # Q, R = Qr_fact_househ(A)
+    # f = open('output.txt','w')
+    # if(len(sys.argv)==3):
+    #     f.write ("x: \n%s\n\n"%np.matrix(x))
+    #     f.write ("error: %s\n"%e)
+    #     #solve
+    # else:
+    #     f.write ("L: \n%s\n\n"%np.array(l))
+    #     f.write ("U: \n%s\n\n"%np.matrix(u))
+    #     #return l,u 
+    # f.write("\n")
+    # f.close()   
+
+
+
+
 
 #Constructing a matrix A for testing purposes
 #A = np.matrix([[12,-51,4], [6,167,-68], [-4,24,-41]])
-
-
 #Does everything
 A = ([[1, 0.5, 0.333333, 0.25],[0.5, 0.333333, 0.25, 0.2], [0.333333, 0.25, 0.2, 0.166667], [0.25, 0.2, 0.166667, 0.142857]])
 b = np.asarray([[0.0464159],[0.0464159],[0.0464159],[0.0464159]])
-#Q, R = Qr_fact_househ(A)
-#x = solve_qr_b(A, b)
+# Q, R = Qr_fact_househ(A)
+# x = solve_qr_b(A, b)

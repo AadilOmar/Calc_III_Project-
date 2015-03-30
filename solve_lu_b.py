@@ -14,10 +14,6 @@ def isInt(s):
         return False
 
 
-
-
-
-
 if(isInt(sys.argv[1])):
 	doHilbert(sys.argv[1])
 else:

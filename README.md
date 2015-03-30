@@ -15,20 +15,22 @@ PART 1:
 		Run LU:
 			run program with filename "solve_lu_b.py" with a fileName parameter eg:("nameOfFile.dat")
 		Run QR-Householders:
-			run program with filename "QR.py" with a fileName parameter eg:("nameOfFile.dat")
+			run program with filename "QR.py" with 2 parameters:
+				fileName parameter eg:("nameOfFile.dat") and "h"
 		Run QR-Givens:
-			run program with filename "QR.py" with a fileName parameter eg:("nameOfFile.dat")
+			run program with filename "QR.py" with 2 parameters:
+				fileName parameter eg:("nameOfFile.dat") and "g"
 
 	Solving a Matrix:
 		Solve with LU:
 			run program with filename "solve_lu_b.py" with 2 params: 
 				fileName parameter eg:("nameOfFile.dat") and "solve"
 		Solve with QR-Householders:
-			run program with filename "QR.py" with 2 params:
-				fileName parameter eg:("nameOfFile.dat") and "solve"
+			run program with filename "QR.py" with 3 params:
+				fileName parameter eg:("nameOfFile.dat"), "h", and "solve"
 		Solve with QR-Givens:
-			run program with filename "QR.py" with 2 params
-				fileName parameter eg:("nameOfFile.dat") and "solve"
+			run program with filename "QR.py" with 3 params
+				fileName parameter eg:("nameOfFile.dat"), "g", and "solve"
 
 
 
