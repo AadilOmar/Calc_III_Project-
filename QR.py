@@ -13,7 +13,7 @@ from math import sqrt
 from math import *
 import sys
 
-output = open("output.txt", "w")
+# output = open("output.txt", "w")
 
 def computeError(matrix):
 	#add all elements in column. Absolute value it. Find the greatest value
@@ -34,6 +34,10 @@ def normOfVector(x):
         sumOfNumbersSquared = sum([i**2 for i in x])
         total = sqrt(sumOfNumbersSquared)
         return total
+
+def getOtherError(A,x,b):
+    return computeError(np.subtract(mMult(A,x),b))
+
     
 def Qr_fact_househ(matrix):
         matrix = np.asarray(matrix)
@@ -113,8 +117,8 @@ def qr_fact_givens(matrix):
             #Sets newMatrix back to the identity each iteration
             newMatrix = [row[:] for row in baseMatrix]
 
-            cosThet = (x1) / math.sqrt(x1 * x1 + x2 * x2)
-            sinThet = -(x2) / math.sqrt(x1 * x1 + x2 * x2)
+            cosThet = (x1) / np.sqrt(x1 * x1 + x2 * x2)
+            sinThet = -(x2) / np.sqrt(x1 * x1 + x2 * x2)
 
             #Sets newMatrix to the Givens matrix for the current iteration
             newMatrix[i][i] = cosThet
@@ -132,49 +136,28 @@ def qr_fact_givens(matrix):
                 qTemp = [row[:] for row in newMatrix]
                 qTemp[i][j+1] *= -1
                 qTemp[j+1][i] *= -1
-                q = mult(q, qTemp)
+                q = mMult(q, qTemp)
 
-            r = mult(newMatrix, r)
+            r = mMult(newMatrix, r)
 
-    qrMatrix = mult(q, r)
+    qrMatrix = mMult(q, r)
     error = [row[:] for row in qrMatrix]
     for i in range(0, n+1):
         for j in range(0, n+1):
             error[i][j] = qrMatrix[i][j] - matrix[i][j]
-
     print(q)
     print(r)
     print(computeError(error))
 
-    #Prints Q to the output file
-    firstLine = str(q[0])
-    output.write("Q = " + firstLine + "\n")
-    for i in range(1, n+1):
-        newLine = str(q[i])
-        output.write("    " + newLine + "\n")
-
-    output.write("\n\n")
-
-    #Prints R to the output file
-    firstLine = str(q[0])
-    output.write("R = " + firstLine + "\n")
-    for i in range(1, n+1):
-        newLine = str(r[i])
-        output.write("    " + newLine + "\n")
-
-    output.write("\n\n")
-
-    #Prints the error to the output file
     errorString = str(computeError(error))
-    output.write("||A-QR||max = " + errorString)
+    return (q,r,errorString)
 
-    output.close()
 
 def solve_qr_b(Q, R, b):
     y = mMult(Q.transpose(), b)
     y = np.asarray(y) #Conveting to a numpy assoc array for consistency with other matrices
     x = findX(R, y) #Coverting to a numpy assoc array for consistency with other matrices
-    return x
+    return y,x
 
 
 
@@ -183,10 +166,11 @@ def DoEverythingQRHouseholders(A, b):
     y, x = solve_qr_b(Q, R, b)
     QR = mMult(Q, R)
     e = computeError(np.subtract(QR, A))
-    return Q, R, y, x, e
+    AxMinusBError = getOtherError(A,x,b)
+    return Q, R, y, x, e, AxMinusBError
     
-A = ([[1, 0.5, 0.333333, 0.25],[0.5, 0.333333, 0.25, 0.2], [0.333333, 0.25, 0.2, 0.166667], [0.25, 0.2, 0.166667, 0.142857]])
-b = np.asarray([[0.0464159],[0.0464159],[0.0464159],[0.0464159]])
+# A = ([[1, 0.5, 0.333333, 0.25],[0.5, 0.333333, 0.25, 0.2], [0.333333, 0.25, 0.2, 0.166667], [0.25, 0.2, 0.166667, 0.142857]])
+# b = np.asarray([[0.0464159],[0.0464159],[0.0464159],[0.0464159]])
 
 def isInt(s):
     try: 
@@ -195,30 +179,36 @@ def isInt(s):
     except ValueError:
         return False
 
+
+
 f = open('output.txt','w')
+(A,b) = readFile(sys.argv[1])
 if(isInt(sys.argv[1])):
     #do hilbert 
     print "doing hilbert"
 else:
-    if((sys.argv[2])=="h"):
-        print "doing house"
-        Q, R = Qr_fact_househ(A)  
+    #do householders
+    if((sys.argv[2])=="h"): 
+        (Q, R, y, x, e, oe) = DoEverythingQRHouseholders(A,b);
+        #calculate
         if(len(sys.argv)==4):
-            print "solving"
-            x = solve_qr_b(Q,R,b)
-            print x
+            print "solving"     #solve
             f.write ("x: \n%s\n\n"%np.matrix(x))
-            # f.write ("error: %s\n"%e)
-        else:
+            f.write ("error (Ax-b): \n%s\n\n"%np.matrix(oe))
+
+        else: #QR
             f.write ("Q: \n%s\n\n"%np.array(Q))
             f.write ("R: \n%s\n\n"%np.matrix(R)) 
+            f.write ("error (QR-A): \n%s\n\n"%np.matrix(e))
             print "qr"
+    #do givens
     else:
-        print "doing givens"
-        if(len(sys.argv)==4):
-            print "solving"
-        else:
-            print "qr"
+        (q,r,e) = qr_fact_givens(A)
+        f.write ("Q: \n%s\n\n"%np.array(q))
+        f.write ("R: \n%s\n\n"%np.matrix(r)) 
+        f.write ("error: \n%s\n\n"%np.matrix(e))
+        print "did givens"
+
 f.write("\n")
 f.close() 
 print "done"

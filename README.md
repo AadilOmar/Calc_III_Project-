@@ -1,15 +1,11 @@
 # Calc_III_Project-
 
 
-PART 1:
+PART 1: The Hilbert Matrix
 
 	Solve Hilbert:
 		Solve with LU:
-*			run program with filename "solve_lu_b.py" with parameter "n" eg:("solve_lu_b.py  17") 
-		Solve with QR-Householders:
-			run program with filename "QR.py with parameter "h" and "n" eg:("qr.py  h  8")
-		Solve with QR-Givens:
-			run program with filename "QR.py" with parameter "g" and "n" eg:("qr.py  g  13")
+			run program with filename "solve_lu_b.py" with parameter "n" eg:("solve_lu_b.py  17") 
 
 	Running LU/QR:
 		Run LU:
@@ -19,7 +15,7 @@ PART 1:
 				fileName parameter eg:("nameOfFile.dat") and "h"
 		Run QR-Givens:
 			run program with filename "QR.py" with 2 parameters:
-				fileName parameter eg:("nameOfFile.dat") and "g"
+				fileName parameter eg:("nameOfFile.dat") and "g"		
 
 	Solving a Matrix:
 		Solve with LU:
@@ -28,13 +24,10 @@ PART 1:
 		Solve with QR-Householders:
 			run program with filename "QR.py" with 3 params:
 				fileName parameter eg:("nameOfFile.dat"), "h", and "solve"
-		Solve with QR-Givens:
-			run program with filename "QR.py" with 3 params
-				fileName parameter eg:("nameOfFile.dat"), "g", and "solve"
-
 
 
 PART 2: Convolution Codes:
+
 	To run encoding/decoding problem:
 		Run either jacobi.py or gauss_seidel.py with the argument n(length of stream). 
 		This will run the encoding and the decoding of the stream and wil print output to output.txt
@@ -46,3 +39,5 @@ PART 2: Convolution Codes:
 		The user will then be asked to input through command-line the tolerance to use
 		The	output will be printed to output.txt
 		ex: "gauss_seidel.py  matrix.dat"
+
+Part 3: 		

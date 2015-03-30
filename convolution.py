@@ -16,6 +16,8 @@ def generateRandomCode(n):
 	for i in range(n):
 		codeList[i][0] = random.randrange(0,2)
 		# list.append(random.randrange(0,2))
+	for i in range(n-3,n):
+		codeList[i][0] = 0
 	print codeList,"THIS IS THE CODE"	
 	return codeList
 
@@ -75,7 +77,7 @@ def findA0(n):
 		else:
 			a[i][i]=1
 			a[i][i-2]=1		
-			a[i][i-3]=1			
+			a[i][i-3]=1	
 	return a		
 
 #finds A1 using algorithm given
@@ -93,7 +95,8 @@ def findA1(n):
 		else:
 			a[i][i]=1
 			a[i][i-1]=1		
-			a[i][i-3]=1			
+			a[i][i-3]=1	
+	print np.matrix(a),"PPPWPWPWPWpW"									
 	return a		
 
 #splits up matrix A into L,D,U (necessary for jacobi and gauss iterations)
@@ -162,13 +165,12 @@ def jacobi(A, y, x0, tol):
 
 #does everything necessary for the encoding portion. returns everything
 def encodingProblem(n):
-	codeList = generateRandomCode(n) #vertical
-	
+	codeList = generateRandomCode(n+3) #vertical
 	# codeList = [1, 0, 1, 1, 0]#, 0]#, 1, 1, 1, 0, 0, 0, 1, 0] #just a tester
 	y0 = findY0(codeList)
 	y1 = findY1(codeList)
-	A0 = findA0(n)
-	A1 = findA1(n)
+	A0 = findA0(n+3)
+	A1 = findA1(n+3)
 	yCode = getConvolutionCodeWord(y0,y1)
 	return (y0,y1,yCode,A0,A1,codeList)
 

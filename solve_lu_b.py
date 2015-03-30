@@ -18,15 +18,16 @@ if(isInt(sys.argv[1])):
 	doHilbert(sys.argv[1])
 else:
 	(A,B) = LU.readFile(sys.argv[1])
-	(l,u,y,x,e) = LU.lu_fact(A,B)
+	(l,u,y,x,e,oe) = LU.lu_fact(A,B)
 	f = open('output.txt','w')
 	if(len(sys.argv)==3):
 		f.write ("x: \n%s\n\n"%np.matrix(x))
-		f.write ("error: %s\n"%e)
+		f.write ("Error (Ax-b): \n%s\n\n"%np.matrix(oe))		
 		#solve
 	else:
 		f.write ("L: \n%s\n\n"%np.array(l))
 		f.write ("U: \n%s\n\n"%np.matrix(u))
+		f.write ("error (LU-H): %s\n"%e)
 		#return l,u	
 	f.write("\n")
 	f.close()	

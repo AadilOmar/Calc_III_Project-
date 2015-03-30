@@ -23,6 +23,10 @@ def computeError(matrix):
 def getArrayToFindNorm(l,u,a):
 	return np.subtract(mMult(l,u),a)
 
+def getOtherError(A,x,b):
+	return computeError(np.subtract(mMult(A,x),b))
+
+
 def computeLU(b):
 	if(len(b)!=len(b[0])):
 		print("The matrix must be nxn")
@@ -114,7 +118,8 @@ def lu_fact(A,b):
 	x = findX(u,y)
 	arr = getArrayToFindNorm(l,u,A)
 	e = computeError(arr)
-	return (l,u,y,x,e)
+	otherE = getOtherError(A,x,b)
+	return (l,u,y,x,e,otherE)
 
 def separateMatrices(matrix):
 	
