@@ -106,7 +106,8 @@ def findY(L,b):
 	y = flipMatrix(findX(convertedMatrix,flipMatrix(b)))
 	return y	 
 
-def doEverything(A,b):
+	
+def lu_fact(A,b):
 	# print A
 	l,u = computeLU(A)
 	y = findY(l,b)
@@ -141,10 +142,12 @@ def hasArgument():
 	else:
 		return True	
 
-def readFile():
+def readFile(name):
 	total = "" 
-	for line in fileinput.input():
+	f = open(name,'r')
+	for line in f:
 		total+=line
+	f.close()	
 	total = total.replace('\n',' ')	
 	array = total.split(' ')
 	if '' in array:

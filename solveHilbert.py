@@ -31,11 +31,11 @@ def createHilbertAndBMatrices(n):
 	b = createB(n)
 	return (H,b)
 
-def doHilbert():
+def doHilbert(n):
 	f = open('output.txt','w')
-	for n in range(2,21):
+	for n in range(2,int(n)+1):
 		(H,b) = createHilbertAndBMatrices(n)
-		(l,u,y,x,e) = LU.doEverything(H,b)
+		(l,u,y,x,e) = LU.lu_fact(H,b)
 		printPretty(n,x,e,f)
 	f.close() 
 

@@ -127,7 +127,7 @@ def solve_gauss_seidel(A, y, x0, tol):
 def gauss_seidel(A, y, x0, tol):
 	numIterations = -1
 	answer = []	
-	for i in range(25):
+	for i in range(50):
 		oldX0 = x0
 		x0 = solve_gauss_seidel(A, y, x0, tol)
 		error = computeError(np.subtract(oldX0,x0))
@@ -149,7 +149,7 @@ def solveJacobi(A, y, x0, tol):
 def jacobi(A, y, x0, tol):
 	numIterations = -1
 	answer = []	
-	for i in range(25):
+	for i in range(50):
 		oldX0 = x0		
 		x0 = solveJacobi(A, y, x0, tol)
 		error = computeError(np.subtract(oldX0,x0))
@@ -163,6 +163,7 @@ def jacobi(A, y, x0, tol):
 #does everything necessary for the encoding portion. returns everything
 def encodingProblem(n):
 	codeList = generateRandomCode(n) #vertical
+	
 	# codeList = [1, 0, 1, 1, 0]#, 0]#, 1, 1, 1, 0, 0, 0, 1, 0] #just a tester
 	y0 = findY0(codeList)
 	y1 = findY1(codeList)
@@ -182,6 +183,7 @@ def decodingJacobi(A0,A1,y0,y1):
 def decodingGauss(A0,A1,y0,y1):
 	x = [[0 for x in range(1)] for x in range(len(A0))]
 	(q,w) = gauss_seidel(A1,y1,x,.000000000000000001)
+	print A0
 	# (q1,w1) = gauss_seidel(A1,y1,x,.000000000000000001)
 	for i in range(len(w)):
 		w[i][0] = np.absolute((w[i][0])%2)

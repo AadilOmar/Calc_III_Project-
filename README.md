@@ -2,13 +2,34 @@
 
 
 PART 1:
-	Calculating LU:
-		Run the program with filename "solve_lu_b.py" with either 0 or 1 more argument
-		If no other argument is given, automatically do hilbert and print output to output.txt file
-		If argument (file containing matrix) is given, LU is done on the matrix and printed to output.txt file
-		If the matrix given is not augmented, it is automatically augmented with [1] matrix to find a solution
-		ex: "solve_lu_b.py"
-		ex: "solve_lu_b.py  matrix.dat"
+
+	Solve Hilbert:
+		Solve with LU:
+*			run program with filename "solve_lu_b.py" with parameter "n" eg:("solve_lu_b.py  17") 
+		Solve with QR-Householders:
+			run program with filename "QR.py with parameter "h" and "n" eg:("qr.py  h  8")
+		Solve with QR-Givens:
+			run program with filename "QR.py" with parameter "g" and "n" eg:("qr.py  g  13")
+
+	Running LU/QR:
+		Run LU:
+			run program with filename "solve_lu_b.py" with a fileName parameter eg:("nameOfFile.dat")
+		Run QR-Householders:
+			run program with filename "QR.py" with a fileName parameter eg:("nameOfFile.dat")
+		Run QR-Givens:
+			run program with filename "QR.py" with a fileName parameter eg:("nameOfFile.dat")
+
+	Solving a Matrix:
+		Solve with LU:
+			run program with filename "solve_lu_b.py" with 2 params: 
+				fileName parameter eg:("nameOfFile.dat") and "solve"
+		Solve with QR-Householders:
+			run program with filename "QR.py" with 2 params:
+				fileName parameter eg:("nameOfFile.dat") and "solve"
+		Solve with QR-Givens:
+			run program with filename "QR.py" with 2 params
+				fileName parameter eg:("nameOfFile.dat") and "solve"
+
 
 
 PART 2: Convolution Codes:
