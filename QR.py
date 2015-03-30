@@ -11,6 +11,8 @@ import pprint
 from math import sqrt
 from math import *
 
+output = open("output.txt", "w")
+
 def computeError(matrix):
 	#add all elements in column. Absolute value it. Find the greatest value
 	error = 0
@@ -75,6 +77,96 @@ def Qr_fact_househ(matrix):
         #R = -1 * R
 
         return Q, R
+        
+def qr_fact_givens(matrix):
+
+    n = len(matrix) - 1
+
+    #Create a matrix to be turned into the identity matrix
+    baseMatrix = [row[:] for row in matrix]
+
+    #Create a matrix to be turned into the Givens matrix
+    newMatrix = [row[:] for row in matrix]
+
+    #Create a matrix that remains a copy of the provided matrix
+    ogMatrix = [row[:] for row in matrix]
+
+    #Create a matrix that becomes the R in the QR factorization
+    r = [row[:] for row in matrix]
+
+    #Sets baseMatrix to the identity matrix
+    for i in range(0, n+1):
+        for j in range(0, n+1):
+            if i == j:
+                baseMatrix[i][j] = 1
+            else:
+                baseMatrix[i][j] = 0
+
+    #Main rotation matrix
+    for i in range (0, n):
+        for j in range(i, n):
+            x1 = r[i][i]
+            x2 = r[j+1][i]
+
+            #Sets newMatrix back to the identity each iteration
+            newMatrix = [row[:] for row in baseMatrix]
+
+            cosThet = (x1) / math.sqrt(x1 * x1 + x2 * x2)
+            sinThet = -(x2) / math.sqrt(x1 * x1 + x2 * x2)
+
+            #Sets newMatrix to the Givens matrix for the current iteration
+            newMatrix[i][i] = cosThet
+            newMatrix[i][j+1] = -1 * sinThet
+            newMatrix[j+1][i] = sinThet
+            newMatrix[j+1][j+1] = cosThet
+
+            #If it is the first iteration, initializes q
+            if i == 0 and j == 0:
+                q = [row[:] for row in newMatrix]
+                q[i][j+1] *= -1
+                q[j+1][i] *= -1
+            #Otherwise, multiplies q by the transpose of the current G matrix
+            else:
+                qTemp = [row[:] for row in newMatrix]
+                qTemp[i][j+1] *= -1
+                qTemp[j+1][i] *= -1
+                q = mult(q, qTemp)
+
+            r = mult(newMatrix, r)
+
+    qrMatrix = mult(q, r)
+    error = [row[:] for row in qrMatrix]
+    for i in range(0, n+1):
+        for j in range(0, n+1):
+            error[i][j] = qrMatrix[i][j] - matrix[i][j]
+
+    print(q)
+    print(r)
+    print(computeError(error))
+
+    #Prints Q to the output file
+    firstLine = str(q[0])
+    output.write("Q = " + firstLine + "\n")
+    for i in range(1, n+1):
+        newLine = str(q[i])
+        output.write("    " + newLine + "\n")
+
+    output.write("\n\n")
+
+    #Prints R to the output file
+    firstLine = str(q[0])
+    output.write("R = " + firstLine + "\n")
+    for i in range(1, n+1):
+        newLine = str(r[i])
+        output.write("    " + newLine + "\n")
+
+    output.write("\n\n")
+
+    #Prints the error to the output file
+    errorString = str(computeError(error))
+    output.write("||A-QR||max = " + errorString)
+
+    output.close()
 
 def solve_qr_b(Q, R, b):
     y = mMult(Q.transpose(), b)
