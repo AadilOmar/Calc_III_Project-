@@ -1,0 +1,59 @@
+LU:
+	FOR N = 2:
+	Error: 0
+
+	FOR N = 3:
+	Error: 0
+
+	FOR N = 4:
+	Error: 5.55111512313e-17
+
+	FOR N = 5:
+	Error: 5.55111512313e-17
+
+	FOR N = 6:
+	Error: 5.55111512313e-17
+
+	FOR N = 7:
+	Error: 5.55111512313e-17
+
+	FOR N = 8:
+	Error: 6.93889390391e-17
+
+	FOR N = 9:
+	Error: 6.93889390391e-17
+
+	FOR N = 10:
+	Error: 6.93889390391e-17
+
+	FOR N = 11:
+	Error: 7.6327832943e-17
+
+	FOR N = 12:
+	Error: 8.32667268469e-17
+
+	FOR N = 13:
+	Error: 9.02056207508e-17
+
+	FOR N = 14:
+	Error: 9.71445146547e-17
+
+	FOR N = 15:
+	Error: 1.04083408559e-16
+
+	FOR N = 16:
+	Error: 1.11022302463e-16
+
+	FOR N = 17:
+	Error: 1.31838984174e-16
+
+	FOR N = 18:
+	Error: 2.77555756156e-16
+
+	FOR N = 19:
+	Error: 5.55111512313e-16
+
+	FOR N = 20:
+	Error: 9.99200722163e-16
+
+QR 
