@@ -1,5 +1,7 @@
 # Calc_III_Project-
 
+**ALL OUTPUT IS PRINTED OUT IN OUTPUT.TXT FILE
+
 
 PART 1: The Hilbert Matrix
 
@@ -10,7 +12,6 @@ PART 1: The Hilbert Matrix
 			run program with filename "QR.py" with one parameter: "h"
 		Solve with QR-givens:
 			run program with filename "QR.py" with one parameter: "g"			
-
 
 	Running LU/QR:
 		Run LU:
@@ -42,7 +43,12 @@ PART 2: Convolution Codes:
 		Run either jacobi.py or gauss_seidel.py with the argument f(file containing an augmented matrix)
 		The user will be asked to input through command-line the initial guess vector ([x1,x2,x3..etc])
 		The user will then be asked to input through command-line the tolerance to use
-		The	output will be printed to output.txt
 		ex: "gauss_seidel.py  matrix.dat"
 
-Part 3: 		
+
+Part 3: URBAN POPULATOIN DYNAMICS
+	
+	To run the power method:
+		run program with filename "Power.py" with a filename argument eg("nameOfFile.dat") containing nxn matrix
+		The user will be asked to input through command-line the initial guess vector eg:("[x1,x2,x3..etc]") 
+		The user will then be asked to input through command-line the tolerance to use
