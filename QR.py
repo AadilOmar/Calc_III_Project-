@@ -68,7 +68,10 @@ def Qr_fact_househ(matrix):
             #instead of numpy's method
             u_norm = normOfVector(u)
             v = u / u_norm
+            #Construct an identity matrix based on num of rows of Matrix A
             Q_2 = np.identity(matrixARows)
+
+            #Construct the outerMatrix
             outerMatrix = np.outer(v,v)
             Q_2[i:, i:] -= 2.0 * outerMatrix
             
@@ -78,16 +81,6 @@ def Qr_fact_househ(matrix):
             #Multiply/Dot Product out Q with Q_2
             #Try it with Aadil's method and cast it into a numpy array from a list
             Q = np.asarray(mMult(Q, Q_2.T))
-
- 
-        #Get's rid of the values in R that shouldn't be there for it to be an upper triangular matrix
-        R = np.triu(R)
-        
-        #Fix up discrepencies in Q -- Actually, may not be necessary
-        #Q = -1 * Q
-    
-        #Fix up discrepencies in R -- Actually, may not be necessary
-        #R = -1 * R
 
         return Q, R
         
