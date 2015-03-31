@@ -3,7 +3,7 @@ import numpy as np
 import scipy
 import scipy.linalg
 import pprint
-from solveHilbert import *
+# from solveHilbert import *
 from math import sqrt
 from math import *
 import sys
@@ -221,6 +221,7 @@ def printPretty(n,matrix,error,f):
     f.write ("FOR N = %s:\n"%n);
     f.write ("Solution: \n%s\n"%np.matrix(matrix))
     f.write ("Error: %s\n"%error)
+
     f.write("\n")
 
 def createHilbertAndBMatrices(n):
