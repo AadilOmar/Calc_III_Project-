@@ -1,14 +1,9 @@
 from matrix_multiply import *
-from LU import rowReduce
-from LU import readFile
-from LU import convertToUpperTriangle
-from LU import flipMatrix
-from LU import findX
-from LU import getArrayToFindNorm
 import numpy as np
 import scipy
 import scipy.linalg
 import pprint
+from solveHilbert import *
 from math import sqrt
 from math import *
 import sys
@@ -145,9 +140,9 @@ def qr_fact_givens(matrix):
     for i in range(0, n+1):
         for j in range(0, n+1):
             error[i][j] = qrMatrix[i][j] - matrix[i][j]
-    print(q)
-    print(r)
-    print(computeError(error))
+    # print(q)
+    # print(r)
+    # print(computeError(error))
 
     errorString = str(computeError(error))
     return (q,r,errorString)
@@ -169,8 +164,89 @@ def DoEverythingQRHouseholders(A, b):
     AxMinusBError = getOtherError(A,x,b)
     return Q, R, y, x, e, AxMinusBError
     
-# A = ([[1, 0.5, 0.333333, 0.25],[0.5, 0.333333, 0.25, 0.2], [0.333333, 0.25, 0.2, 0.166667], [0.25, 0.2, 0.166667, 0.142857]])
-# b = np.asarray([[0.0464159],[0.0464159],[0.0464159],[0.0464159]])
+
+
+def readFile(name):
+    total = "" 
+    f = open(name,'r')
+    for line in f:
+        total+=line
+    f.close()   
+    total = total.replace('\n',' ') 
+    array = total.split(' ')
+    if '' in array:
+        array.remove('')
+    if "" in array:
+        array.remove("")    
+    for i in range(len(array)):
+        array[i] = (array[i])
+    (a,b) = separateMatrices(array) 
+    # print(type(b[0][0]),"!!!!!!!!!!!!!!")     
+    return (a,b)    
+
+def separateMatrices(matrix):
+    
+    num = np.math.sqrt(len(matrix))
+    cols = int(np.math.floor(num))
+    A = [[0 for x in range(cols)] for x in range(cols)]
+    B = [[1 for x in range(1)] for x in range(cols)]
+    index = 0
+    for i in range(cols):
+        for j in range(cols):
+            A[i][j] = float(matrix[index])
+            index+=1
+        if (not num.is_integer()):
+            index+=1
+    if (not num.is_integer()):
+        anotherIndex = cols 
+        for k in range(cols):
+            B[k][0] = float(matrix[anotherIndex])
+            anotherIndex+=(cols+1)
+    return (A,B)    
+
+def createHilbert(n):
+    H = [[0 for x in range(n)] for x in range(n)]
+    for i in range(n):
+        for j in range(n):
+            H[i][j] = 1/float(i+j-1+2)
+    return H        
+
+
+def createB(n):
+    value = np.math.pow(.1,float(n)/3)
+    b = [[value] for x in range(n)]
+    return b
+
+def printPretty(n,matrix,error,f):
+    f.write ("FOR N = %s:\n"%n);
+    f.write ("Solution: \n%s\n"%np.matrix(matrix))
+    f.write ("Error: %s\n"%error)
+    f.write("\n")
+
+def createHilbertAndBMatrices(n):
+    H = createHilbert(n)
+    b = createB(n)
+    return (H,b)
+
+def doHilbertQRGivens():
+    f = open('output.txt','w')
+    for n in range(2,21):
+        (H,b) = createHilbertAndBMatrices(n)
+        (q,r,e) = qr_fact_givens(H)
+        (y, x) = solve_qr_b(np.array(q), r, b)
+        printPretty(n,x,e,f)
+    f.close() 
+
+def doHilbertQRHouseholders():
+    f = open('output.txt','w')
+    for n in range(2,21):
+        (H,b) = createHilbertAndBMatrices(n)
+        (Q, R, y, x, e, oe) = DoEverythingQRHouseholders(H,b);
+        printPretty(n,x,e,f)
+    f.close() 
+
+
+
 
 def isInt(s):
     try: 
@@ -182,11 +258,17 @@ def isInt(s):
 
 
 f = open('output.txt','w')
-(A,b) = readFile(sys.argv[1])
-if(isInt(sys.argv[1])):
+
+if(len(sys.argv)==2):
     #do hilbert 
-    print "doing hilbert"
+    from solveHilbert import *
+    if(sys.argv[1]=="h"):
+        doHilbertQRHouseholders()       
+    else:
+        doHilbertQRGivens()       
+    print "doing hilbert!!!!!!!!!!!!!!"
 else:
+    (A,b) = readFile(sys.argv[1])
     #do householders
     if((sys.argv[2])=="h"): 
         (Q, R, y, x, e, oe) = DoEverythingQRHouseholders(A,b);
@@ -206,7 +288,7 @@ else:
         (q,r,e) = qr_fact_givens(A)
         f.write ("Q: \n%s\n\n"%np.array(q))
         f.write ("R: \n%s\n\n"%np.matrix(r)) 
-        f.write ("error: \n%s\n\n"%np.matrix(e))
+        f.write ("error (QR-A): \n%s\n\n"%np.matrix(e))
         print "did givens"
 
 f.write("\n")
@@ -233,7 +315,7 @@ print "done"
 #Constructing a matrix A for testing purposes
 #A = np.matrix([[12,-51,4], [6,167,-68], [-4,24,-41]])
 #Does everything
-A = ([[1, 0.5, 0.333333, 0.25],[0.5, 0.333333, 0.25, 0.2], [0.333333, 0.25, 0.2, 0.166667], [0.25, 0.2, 0.166667, 0.142857]])
-b = np.asarray([[0.0464159],[0.0464159],[0.0464159],[0.0464159]])
+# A = ([[1, 0.5, 0.333333, 0.25],[0.5, 0.333333, 0.25, 0.2], [0.333333, 0.25, 0.2, 0.166667], [0.25, 0.2, 0.166667, 0.142857]])
+# b = np.asarray([[0.0464159],[0.0464159],[0.0464159],[0.0464159]])
 # Q, R = Qr_fact_househ(A)
 # x = solve_qr_b(A, b)

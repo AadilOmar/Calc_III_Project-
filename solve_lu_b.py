@@ -14,8 +14,8 @@ def isInt(s):
         return False
 
 
-if(isInt(sys.argv[1])):
-	doHilbert(sys.argv[1])
+if(len(sys.argv)==1):
+	doHilbertLU()
 else:
 	(A,B) = LU.readFile(sys.argv[1])
 	(l,u,y,x,e,oe) = LU.lu_fact(A,B)

@@ -5,7 +5,12 @@ PART 1: The Hilbert Matrix
 
 	Solve Hilbert:
 		Solve with LU:
-			run program with filename "solve_lu_b.py" with parameter "n" eg:("solve_lu_b.py  17") 
+			run program with filename "solve_lu_b.py" with no parameters
+		Solve with QR-householders:
+			run program with filename "QR.py" with one parameter: "h"
+		Solve with QR-givens:
+			run program with filename "QR.py" with one parameter: "g"			
+
 
 	Running LU/QR:
 		Run LU:

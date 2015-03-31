@@ -31,13 +31,32 @@ def createHilbertAndBMatrices(n):
 	b = createB(n)
 	return (H,b)
 
-def doHilbert(n):
+def doHilbertLU():
 	f = open('output.txt','w')
-	for n in range(2,int(n)+1):
+	for n in range(2,21):
 		(H,b) = createHilbertAndBMatrices(n)
-		(l,u,y,x,e) = LU.lu_fact(H,b)
+		(l,u,y,x,e, otherE) = LU.lu_fact(H,b)
 		printPretty(n,x,e,f)
 	f.close() 
+
+# def doHilbertQRGivens():
+# 	f = open('output.txt','w')
+# 	from QR import *
+# 	for n in range(2,21):
+# 		(H,b) = createHilbertAndBMatrices(n)
+#         (q,r,e) = qr_fact_givens(H)
+#         (y, x) = solve_qr_b(q, r, b)
+#         printPretty(n,x,e,f)
+# 	f.close() 
+
+# def doHilbertQRHouseholders():
+# 	f = open('output.txt','w')
+# 	from QR import *	
+# 	for n in range(2,21):
+# 		(H,b) = createHilbertAndBMatrices(n)
+#         (Q, R, y, x, e, oe) = DoEverythingQRHouseholders(H,b);
+#         printPretty(n,x,e,f)
+# 	f.close() 
 
 
 
