@@ -36,7 +36,7 @@ def getInput():
 def printEncodedOutput(yCode, decodedStream,iterations):
 	f = open('output.txt','w')
 	if(iterations<=0):
-		iterations = "Method does not converge after 50 iterations"
+		iterations = "Method does not converge after 100 iterations"
 	f.write ("Jacobi Method Encoding/Decoding Problem:\n")
 	f.write ("y stream output: \n%s\n"%np.matrix(yCode))
 	f.write ("decoded stream: \n%s\n"%np.array(decodedStream))
@@ -46,7 +46,7 @@ def printEncodedOutput(yCode, decodedStream,iterations):
 
 def printIterative(answer,iterations):
 	if(iterations==-1):
-		iterations = "Method does not converge after 25 iterations"
+		iterations = "Method does not converge after 100 iterations"
 	f = open('output.txt','w')
 	f.write ("Gauss Seidel Method Iterative Method:\n")
 	f.write ("Iterations needed: %s\n"%iterations)

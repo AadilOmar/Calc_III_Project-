@@ -10,6 +10,18 @@ import sys
 
 # output = open("output.txt", "w")
 
+def findX(U,y):
+    size = len(U)
+    x = [[0 for x in range(1)] for x in range(len(U))]
+    for i in range(len(U)):
+        x[i][0] = y[i][0]
+    for i in range(size-1,-1,-1):
+        for j in range(size-1,i,-1):
+            x[i][0] -= (U[i][j])*(x[j][0])
+        if (U[i][i]!=0):
+            x[i][0] /= (U[i][i])
+    return x
+
 def computeError(matrix):
 	#add all elements in column. Absolute value it. Find the greatest value
 	error = 0

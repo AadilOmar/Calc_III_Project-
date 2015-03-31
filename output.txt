@@ -1,6 +1,6 @@
-Largest eigenvalue: 10.2271044705
+Largest eigenvalue: 10.227104918
 The corresponding eigenvector is: 
-[[ 4.05915098]
- [-9.10880304]
+[[ 4.05916276]
+ [-9.10882759]
  [ 1.        ]]
-The eigenvalue was found in 59 iterations.
+The eigenvalue was found in 49 iterations.
